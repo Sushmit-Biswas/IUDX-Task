@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { ScrollView, View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { useTheme } from "@/hooks/use-theme";
 import { Radius, Spacing, Typography, Shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
@@ -41,7 +41,7 @@ export default function SemanticsScreen() {
   );
 
   return (
-    <SafeAreaView
+    <View
       style={[styles.container, { backgroundColor: theme.background }]}
     >
       <ScrollView
@@ -157,7 +157,7 @@ export default function SemanticsScreen() {
           <Bullet>Consent artefacts are permission slips, not files</Bullet>
         </Section>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -8,7 +8,7 @@ import React, { useRef, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, Animated, Easing } from "react-native";
 import { useTheme } from "@/hooks/use-theme";
 import { ObligationCard } from "./ObligationCard";
-import { Spacing, Typography } from "@/constants/theme";
+import { Spacing, Typography, Radius } from "@/constants/theme";
 import type { Obligation, Role, Resource } from "@/lib/iudx";
 import { Ionicons } from "@expo/vector-icons";
 

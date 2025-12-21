@@ -7,7 +7,6 @@ import React, { useReducer, useState, useCallback } from "react";
 import {
   ScrollView,
   StyleSheet,
-  SafeAreaView,
   RefreshControl,
   View,
 } from "react-native";
@@ -140,7 +139,7 @@ export default function ConnectionHubScreen() {
   ];
 
   return (
-    <SafeAreaView
+    <View
       style={[styles.container, { backgroundColor: theme.background }]}
     >
       <ScrollView
@@ -152,10 +151,14 @@ export default function ConnectionHubScreen() {
         }
       >
         {/* Connection Header (Bento Grid) */}
+        {/* Connection Header (Bento Grid) */}
         <ConnectionHeader
           connection={connection}
           currentRole={currentRole}
-          onRoleSwitch={handleRoleSwitch}
+          pendingCount={filteredObligations.filter(o => o.status === 'Pending').length}
+          activeCount={filteredObligations.filter(o => o.status === 'Fulfilled').length}
+          onSwitchRole={handleRoleSwitch}
+          onManageConsent={() => { }} // Placeholder or navigation
         />
 
         {/* Connection Actions (Modernized) */}
@@ -179,8 +182,8 @@ export default function ConnectionHubScreen() {
           currentRole={currentRole}
           resources={allResources}
           connectionActive={connection.status === "Established"}
-          onSelectResource={(id) => setResourceModalObligation(id)}
-          onViewConsent={(id) => setConsentModalObligation(id)}
+          onSelectResource={(id: string) => setResourceModalObligation(id)}
+          onViewConsent={(id: string) => setConsentModalObligation(id)}
           onApprove={handleApprove}
           onReject={handleReject}
         />
@@ -214,7 +217,7 @@ export default function ConnectionHubScreen() {
           onReject={() => handleReject(consentObligation.id)}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
