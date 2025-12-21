@@ -5,7 +5,7 @@
  */
 
 import React, { useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Pressable, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Animated, Easing, Platform } from 'react-native';
 import { useTheme } from '@/hooks/use-theme';
 import { StatusBadge } from './StatusBadge';
 import { Spacing, Radius, Typography, Shadows } from '@/constants/theme';
@@ -33,6 +33,8 @@ export function ConnectionHeader({
     // Use a single animated value for the pulse loop
     const pulseAnim = useRef(new Animated.Value(0)).current;
 
+    const isWeb = Platform.OS === 'web';
+
     // Pulse Animation Effect
     useEffect(() => {
         if (connection.status === 'Established') {
@@ -42,13 +44,13 @@ export function ConnectionHeader({
                         toValue: 1,
                         duration: 1500,
                         easing: Easing.inOut(Easing.ease),
-                        useNativeDriver: true,
+                        useNativeDriver: !isWeb, // Disable native driver for loop on web if causing issues, though usually okay for opacity/transform
                     }),
                     Animated.timing(pulseAnim, {
                         toValue: 0,
                         duration: 1500,
                         easing: Easing.inOut(Easing.ease),
-                        useNativeDriver: true,
+                        useNativeDriver: !isWeb,
                     }),
                 ])
             );
@@ -57,7 +59,8 @@ export function ConnectionHeader({
         } else {
             pulseAnim.setValue(0);
         }
-    }, [connection.status, pulseAnim]);
+    }, [connection.status, pulseAnim, isWeb]);
+
 
     const currentOrg = currentRole === 'HOST'
         ? connection.host.organization
@@ -105,7 +108,7 @@ export function ConnectionHeader({
                 {/* Block 2: Connection Status (Animated) */}
                 <View style={[styles.statusCard, { backgroundColor: theme.card }, Shadows.sm]}>
                     <Text style={[styles.label, { color: theme.textTertiary }]}>CONNECTION</Text>
-                    <Text style={[styles.connName, { color: theme.text }]} numberOfLines={1}>{connection.name}</Text>
+                    <Text style={[styles.connName, { color: theme.text }]}>{connection.name}</Text>
                     <View style={styles.statusRow}>
                         <StatusBadge status={connection.status} size="small" />
                         {connection.status === 'Established' && (
@@ -159,6 +162,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         gap: Spacing.md,
+        borderWidth: 1, // Add explicit border
     },
     profileInfo: {
         flex: 1,
@@ -169,9 +173,9 @@ const styles = StyleSheet.create({
         gap: Spacing.sm,
     },
     avatar: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
+        width: 40, // Slightly bigger
+        height: 40,
+        borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
@@ -180,27 +184,32 @@ const styles = StyleSheet.create({
     actingAsLabel: {
         fontSize: 10,
         color: 'rgba(255,255,255,0.8)',
-        fontWeight: '600',
-        letterSpacing: 0.5,
+        fontWeight: '700',
+        letterSpacing: 1,
+        marginBottom: 2,
     },
     orgName: {
         fontSize: Typography.sizes.md,
         fontWeight: '700',
         color: '#FFFFFF',
+        ...Platform.select({
+            ios: { fontFamily: 'System' },
+            android: { fontFamily: 'sans-serif-medium' },
+        }),
     },
     switchBtn: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 6,
-        paddingHorizontal: 14, // Increased padding
-        paddingVertical: 10,   // Increased height/padding
+        gap: 8,
+        paddingHorizontal: 16, // Increased size
+        paddingVertical: 12,   // Increased size
         borderRadius: Radius.full,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.3)',
+        borderColor: 'rgba(255,255,255,0.4)',
     },
     switchBtnText: {
         fontSize: Typography.sizes.sm,
-        fontWeight: '600',
+        fontWeight: '700',
         color: '#FFFFFF',
     },
 
@@ -208,13 +217,13 @@ const styles = StyleSheet.create({
     gridRow: {
         flexDirection: 'row',
         gap: Spacing.md,
-        height: 100, // Fixed height for alignment
+        // Height removed to allow content to grow
     },
     statusCard: {
         flex: 2,
         borderRadius: Radius.lg,
         padding: Spacing.md,
-        justifyContent: 'space-between',
+        gap: Spacing.sm, // Add gap
     },
     metricsCard: {
         flex: 1,
@@ -226,6 +235,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         gap: 2,
+        paddingVertical: 8,
     },
 
     // Shared Styles
@@ -234,17 +244,22 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         letterSpacing: 0.5,
         marginBottom: 4,
+        textTransform: 'uppercase',
     },
     connName: {
         fontSize: Typography.sizes.sm,
         fontWeight: '600',
-        marginBottom: 'auto',
+        lineHeight: 20,
+        ...Platform.select({
+            ios: { fontFamily: 'System' },
+            android: { fontFamily: 'sans-serif' },
+        }),
     },
     statusRow: {
-        marginTop: 'auto',
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
+        marginTop: 4,
     },
     pulseDotWrapper: {
         width: 8,
@@ -258,7 +273,7 @@ const styles = StyleSheet.create({
         borderRadius: 3,
     },
     metricVal: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: '700',
     },
     metricLabel: {

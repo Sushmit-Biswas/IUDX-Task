@@ -5,7 +5,7 @@
  */
 
 import React, { useRef, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, Animated, Easing } from "react-native";
+import { View, Text, StyleSheet, FlatList, Animated, Easing, Platform } from "react-native";
 import { useTheme } from "@/hooks/use-theme";
 import { ObligationCard } from "./ObligationCard";
 import { Spacing, Typography, Radius } from "@/constants/theme";
@@ -22,7 +22,7 @@ const AnimatedCard = ({ children, index }: { children: React.ReactNode; index: n
             toValue: 1,
             duration: 500,
             delay: index * 100, // Stagger effect
-            useNativeDriver: true,
+            useNativeDriver: Platform.OS !== 'web',
             easing: Easing.out(Easing.back(1.5)), // Nice bounce effect
         }).start();
     }, [index, animatedValue]);
