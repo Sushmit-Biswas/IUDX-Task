@@ -82,7 +82,7 @@ export function ConnectionHeader({
                         </View>
                         <View>
                             <Text style={styles.actingAsLabel}>ACTING AS</Text>
-                            <Text style={styles.orgName} numberOfLines={1}>{currentOrg}</Text>
+                            <Text style={styles.orgName} numberOfLines={1}>{currentOrg.name}</Text>
                         </View>
                     </View>
                 </View>
