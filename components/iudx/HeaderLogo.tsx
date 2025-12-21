@@ -34,19 +34,19 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
   },
   iconContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
+    width: 36, // Increased
+    height: 36, // Increased
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
-    fontSize: 16,
-    lineHeight: 18,
+    fontSize: 20, // Increased
+    lineHeight: 22,
   },
   subtitle: {
-    fontSize: 10,
-    lineHeight: 12,
+    fontSize: 12, // Increased
+    lineHeight: 14,
     letterSpacing: 0.5,
   },
 });

@@ -75,7 +75,13 @@ export function ResourceModal({
           {/* Footer */}
           <Pressable
             onPress={onCancel}
-            style={[styles.cancelBtn, { backgroundColor: theme.backgroundSecondary }]}
+            style={[
+              styles.cancelBtn,
+              {
+                backgroundColor: theme.backgroundSecondary,
+                borderColor: theme.border // Explicit border color
+              }
+            ]}
           >
             <Text style={[styles.cancelText, { color: theme.text }]}>Cancel</Text>
           </Pressable>
@@ -148,8 +154,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: Radius.full,
     alignItems: 'center',
+    borderWidth: 1, // Add border for visibility
   },
   cancelText: {
     fontWeight: '600',
+    fontSize: Typography.sizes.sm,
   },
 });

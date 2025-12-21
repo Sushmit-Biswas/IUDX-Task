@@ -126,7 +126,14 @@ export function ConsentModal({
             ) : (
               <Pressable
                 onPress={onClose}
-                style={[styles.closeAction, { backgroundColor: theme.backgroundSecondary }]}
+                style={[
+                  styles.closeAction,
+                  {
+                    backgroundColor: theme.backgroundSecondary,
+                    borderColor: theme.border,
+                    borderWidth: 1 // Explicit border
+                  }
+                ]}
               >
                 <Text style={[styles.closeText, { color: theme.text }]}>Close</Text>
               </Pressable>
