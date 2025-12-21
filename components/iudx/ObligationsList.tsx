@@ -12,19 +12,11 @@ import { Spacing, Typography, Radius } from "@/constants/theme";
 import type { Obligation, Role, Resource } from "@/lib/iudx";
 import { Ionicons } from "@expo/vector-icons";
 
-/**
- * A wrapper component that applies a stagger entry animation to its children.
- * Uses `opacity` and `translateY` for a smooth slide-up effect.
- * 
- * @param index - The list index, used to calculate the animation delay.
- */
+// Animated Card Wrapper
+// Using opacity and translation only on the wrapper view logic to prevent layout shifts/background artifacts
 const AnimatedCard = ({ children, index }: { children: React.ReactNode; index: number }) => {
     const animatedValue = useRef(new Animated.Value(0)).current;
 
-    /**
-     * Trigger the entry animation on mount.
-     * Web driver check is included to prevent "Main Thread" warnings on web.
-     */
     useEffect(() => {
         Animated.timing(animatedValue, {
             toValue: 1,
@@ -53,17 +45,10 @@ const AnimatedCard = ({ children, index }: { children: React.ReactNode; index: n
     );
 };
 
-/**
- * Props for the ObligationsList component.
- */
 interface ObligationsListProps {
-    /** The list of obligations to display. */
     obligations: Obligation[];
-    /** The active role of the user, used to filter actions. */
     currentRole: Role;
-    /** Available resources to fulfill obligations (Provider only). */
     resources: Resource[];
-    /** Whether the active connection is 'Established'. */
     connectionActive: boolean;
     onSelectResource: (obligationId: string) => void;
     onViewConsent: (obligationId: string) => void;
@@ -71,12 +56,6 @@ interface ObligationsListProps {
     onReject: (obligationId: string) => void;
 }
 
-/**
- * ObligationsList
- * 
- * Renders a list of obligations (Pending, Fulfilled, etc.) using `AnimatedCard` wrappers.
- * Shows a specific empty state if no obligations match the current filter.
- */
 export function ObligationsList({
     obligations,
     currentRole,

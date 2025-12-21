@@ -5,6 +5,13 @@
 
 import type { Connection } from './types';
 
+/**
+ * Mock Data Resources
+ * 
+ * Used to simulate files in the organization's secure locker.
+ * In a real app, these would be fetched from a Resource Server (RS).
+ */
+
 // Kaveri Hospital's resources (Guest)
 const kaveriResources = [
   { id: 'kr-1', name: 'Insurance Claim Receipt', type: 'pdf' as const, size: '620 KB' },
@@ -22,6 +29,15 @@ const licResources = [
   { id: 'lr-4', name: 'Premium Payment Receipt', type: 'pdf' as const, size: '156 KB' },
 ];
 
+/**
+ * Initial Connection State
+ * 
+ * Defines the starting point of the demo scenario:
+ * - A connection is "Established" between Kaveri Hospital and LIC Insurance.
+ * - Obligations are "Pending", waiting for user action.
+ * 
+ * This object is deep-copied to reset the state when the user clicks "Reset Demo".
+ */
 export const initialConnection: Connection = {
   id: 'conn-1',
   name: 'LIC Policy Link',

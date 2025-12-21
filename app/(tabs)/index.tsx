@@ -30,20 +30,21 @@ import { Spacing } from "@/constants/theme";
 type TabKey = "shared" | "received";
 
 /**
- * Connection Hub Screen (index.tsx)
+ * Connection Hub Screen
  * 
- * This is the primary interface for the IUDX Consent Flow Demo.
- * It manages the global state of the "Connection" between two parties (Host & Guest).
+ * The central dashboard for the IUDX Data Consent Demo.
+ * Orchestrates the bidirectional consent flow between a Host (Provider) and Guest (Consumer).
  * 
- * Key Responsibilities:
- * - State Management: Uses `useReducer` to handle complex connection state transitions.
- * - Role Switching: Toggles between 'HOST' (Provider) and 'GUEST' (Consumer) views.
- * - Modal Management: Orchestrates resource selection and consent viewing flows.
+ * Features:
+ * - Role Switching: Toggle between Host and Guest views.
+ * - Bento-Grid Header: Visualizing connection status.
+ * - Obligation Management: List of data sharing duties.
+ * - Resource Locker: Mock data selection for fulfilling obligations.
  */
 export default function ConnectionHubScreen() {
   const { theme } = useTheme();
 
-  // State management
+  // State management for the connection lifecycle
   const [connection, dispatch] = useReducer(
     connectionReducer,
     null,
@@ -53,7 +54,7 @@ export default function ConnectionHubScreen() {
   const [activeTab, setActiveTab] = useState<TabKey>("shared");
   const [refreshing, setRefreshing] = useState(false);
 
-  // Modal state
+  // Modal State Triggers
   const [resourceModalObligation, setResourceModalObligation] = useState<
     string | null
   >(null);
@@ -61,13 +62,18 @@ export default function ConnectionHubScreen() {
     string | null
   >(null);
 
-  // Derived data
+  // Derived data helpers for generic access
   const currentParty =
     currentRole === "HOST" ? connection.host : connection.guest;
   const partnerParty =
     currentRole === "HOST" ? connection.guest : connection.host;
 
-  // Filter obligations based on current view
+  /**
+   * Filters obligations based on the active tab context.
+   * 
+   * - "Shared by me": Obligations where I am the Provider needs to fulfill data.
+   * - "From Partner": Obligations where I am the Receiver waiting for data.
+   */
   const getFilteredObligations = (): Obligation[] => {
     if (activeTab === "shared") {
       // Show obligations where current role is provider (sharing data)
@@ -82,7 +88,10 @@ export default function ConnectionHubScreen() {
     }
   };
 
-  // Get resources for the provider's locker
+  /**
+   * Retrieves available resources from the current provider's locker.
+   * Used to populate the Resource Selection Modal.
+   */
   const getProviderResources = (obligation: Obligation) => {
     const provider =
       obligation.providerRole === "HOST" ? connection.host : connection.guest;

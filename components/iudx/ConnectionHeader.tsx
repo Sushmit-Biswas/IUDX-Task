@@ -12,35 +12,15 @@ import { Spacing, Radius, Typography, Shadows } from '@/constants/theme';
 import type { Connection, Role } from '@/lib/iudx';
 import { Ionicons } from '@expo/vector-icons';
 
-/**
- * Props for the ConnectionHeader component.
- */
 interface ConnectionHeaderProps {
-    /** The active connection object containing status and party details. */
     connection: Connection;
-    /** The current role assumed by the user (HOST or GUEST). */
     currentRole: Role;
-    /** Number of obligations currently in 'Pending' state. */
     pendingCount: number;
-    /** Number of obligations currently in 'Fulfilled' state. */
     activeCount: number;
-    /** Callback triggered when the 'Switch Role' button is pressed. */
     onSwitchRole: () => void;
-    /** Callback triggered when the 'Revoke/Manage' button is pressed. */
     onManageConsent: () => void;
 }
 
-/**
- * ConnectionHeader
- * 
- * A dashboard-style header component that displays the current connection status,
- * the user's active role, and summary metrics.
- * 
- * Features:
- * - pulsing animation for 'Established' connections.
- * - Platform-specific logic for animation drivers (JS for Web, Native for Mobile).
- * - Adaptive layout for Organization names.
- */
 export function ConnectionHeader({
     connection,
     currentRole,
@@ -58,9 +38,11 @@ export function ConnectionHeader({
     /**
      * Pulse Animation Effect
      * 
-     * Creates a continuous breathing effect (opacity fade in/out) when the connection
-     * is established. We explicitly disable `useNativeDriver` on Web to prevent
-     * compatibility warnings, while keeping it enabled on mobile for performance.
+     * Creates a breathing/pulsing effect for the "Established" status.
+     * Logic:
+     * - Loops an opacity sequence from 0 -> 1 -> 0.
+     * - Web Check: Disables native driver on Web to prevent "Main Thread" warnings,
+     *   as text transformers aren't fully supported in these versions.
      */
     useEffect(() => {
         if (connection.status === 'Established') {
@@ -70,7 +52,7 @@ export function ConnectionHeader({
                         toValue: 1,
                         duration: 1500,
                         easing: Easing.inOut(Easing.ease),
-                        useNativeDriver: !isWeb, // Disable native driver for loop on web if causing issues, though usually okay for opacity/transform
+                        useNativeDriver: !isWeb, // Disable native driver on web for reliability
                     }),
                     Animated.timing(pulseAnim, {
                         toValue: 0,
