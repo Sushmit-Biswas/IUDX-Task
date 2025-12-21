@@ -12,15 +12,35 @@ import { Spacing, Radius, Typography, Shadows } from '@/constants/theme';
 import type { Connection, Role } from '@/lib/iudx';
 import { Ionicons } from '@expo/vector-icons';
 
+/**
+ * Props for the ConnectionHeader component.
+ */
 interface ConnectionHeaderProps {
+    /** The active connection object containing status and party details. */
     connection: Connection;
+    /** The current role assumed by the user (HOST or GUEST). */
     currentRole: Role;
+    /** Number of obligations currently in 'Pending' state. */
     pendingCount: number;
+    /** Number of obligations currently in 'Fulfilled' state. */
     activeCount: number;
+    /** Callback triggered when the 'Switch Role' button is pressed. */
     onSwitchRole: () => void;
+    /** Callback triggered when the 'Revoke/Manage' button is pressed. */
     onManageConsent: () => void;
 }
 
+/**
+ * ConnectionHeader
+ * 
+ * A dashboard-style header component that displays the current connection status,
+ * the user's active role, and summary metrics.
+ * 
+ * Features:
+ * - pulsing animation for 'Established' connections.
+ * - Platform-specific logic for animation drivers (JS for Web, Native for Mobile).
+ * - Adaptive layout for Organization names.
+ */
 export function ConnectionHeader({
     connection,
     currentRole,
@@ -35,7 +55,13 @@ export function ConnectionHeader({
 
     const isWeb = Platform.OS === 'web';
 
-    // Pulse Animation Effect
+    /**
+     * Pulse Animation Effect
+     * 
+     * Creates a continuous breathing effect (opacity fade in/out) when the connection
+     * is established. We explicitly disable `useNativeDriver` on Web to prevent
+     * compatibility warnings, while keeping it enabled on mobile for performance.
+     */
     useEffect(() => {
         if (connection.status === 'Established') {
             const loop = Animated.loop(

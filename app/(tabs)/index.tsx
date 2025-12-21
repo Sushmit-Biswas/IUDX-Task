@@ -29,6 +29,17 @@ import { Spacing } from "@/constants/theme";
 
 type TabKey = "shared" | "received";
 
+/**
+ * Connection Hub Screen (index.tsx)
+ * 
+ * This is the primary interface for the IUDX Consent Flow Demo.
+ * It manages the global state of the "Connection" between two parties (Host & Guest).
+ * 
+ * Key Responsibilities:
+ * - State Management: Uses `useReducer` to handle complex connection state transitions.
+ * - Role Switching: Toggles between 'HOST' (Provider) and 'GUEST' (Consumer) views.
+ * - Modal Management: Orchestrates resource selection and consent viewing flows.
+ */
 export default function ConnectionHubScreen() {
   const { theme } = useTheme();
 
