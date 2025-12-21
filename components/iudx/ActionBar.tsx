@@ -1,11 +1,13 @@
 /**
  * ActionBar Component
- * Connection control actions
+ * Connection control actions - Modernized
  */
 
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useTheme } from '@/hooks/use-theme';
+import { Radius, Spacing, Typography, Shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ActionBarProps {
   connectionActive: boolean;
@@ -23,41 +25,51 @@ export function ActionBar({
   const { theme } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.card, borderColor: theme.border }]}>
-      {connectionActive ? (
-        <View style={[styles.warningBox, { backgroundColor: theme.warningLight, borderColor: theme.warning }]}>
-          <Text style={[styles.warningText, { color: theme.warningText }]}>
-            ⚠️ The Connection is active. You can revoke it at any time.
-          </Text>
-        </View>
-      ) : (
-        <View style={[styles.warningBox, { backgroundColor: theme.dangerLight, borderColor: theme.danger }]}>
-          <Text style={[styles.warningText, { color: theme.dangerText }]}>
-            🚫 Connection is revoked. No data transactions are possible.
-          </Text>
-        </View>
-      )}
+    <View style={[styles.container, { backgroundColor: theme.card }, Shadows.sm]}>
+
+      {/* Status Banner */}
+      <View
+        style={[
+          styles.banner,
+          {
+            backgroundColor: connectionActive ? theme.warningBg : theme.errorBg,
+            // borderColor: connectionActive ? theme.warning : theme.error
+          }
+        ]}
+      >
+        <Ionicons
+          name={connectionActive ? "information-circle" : "alert-circle"}
+          size={20}
+          color={connectionActive ? theme.warning : theme.error}
+        />
+        <Text style={[styles.bannerText, { color: connectionActive ? theme.warning : theme.error }]}>
+          {connectionActive
+            ? "Connection is active & secure."
+            : "Connection revoked. Data flow paused."}
+        </Text>
+      </View>
 
       <View style={styles.buttons}>
-        {connectionActive ? (
-          <Pressable
-            onPress={onRevoke}
-            style={[styles.btn, { backgroundColor: theme.danger }]}
-          >
-            <Text style={styles.btnText}>Revoke Connection</Text>
-          </Pressable>
-        ) : (
-          <Pressable
-            onPress={onRestore}
-            style={[styles.btn, { backgroundColor: theme.success }]}
-          >
-            <Text style={styles.btnText}>Restore Connection</Text>
-          </Pressable>
-        )}
+        <Pressable
+          onPress={connectionActive ? onRevoke : onRestore}
+          style={[
+            styles.btn,
+            { backgroundColor: connectionActive ? theme.error : theme.success }
+          ]}
+        >
+          <Ionicons
+            name={connectionActive ? "power" : "refresh"}
+            size={16}
+            color="white"
+          />
+          <Text style={styles.btnText}>
+            {connectionActive ? "Revoke Connection" : "Restore Connection"}
+          </Text>
+        </Pressable>
 
         <Pressable
           onPress={onReset}
-          style={[styles.btn, styles.resetBtn, { borderColor: theme.border }]}
+          style={[styles.resetBtn, { borderColor: theme.border }]}
         >
           <Text style={[styles.resetBtnText, { color: theme.textSecondary }]}>Reset Demo</Text>
         </Pressable>
@@ -68,43 +80,50 @@ export function ActionBar({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    marginBottom: 16,
-    gap: 12,
+    padding: Spacing.md,
+    borderRadius: Radius.lg,
+    marginBottom: Spacing.lg,
   },
-  warningBox: {
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderLeftWidth: 4,
+  banner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    padding: Spacing.md,
+    borderRadius: Radius.md,
+    marginBottom: Spacing.md,
   },
-  warningText: {
-    fontSize: 13,
-    fontWeight: '500',
+  bannerText: {
+    fontSize: Typography.sizes.sm,
+    fontWeight: '600',
+    flex: 1,
   },
   buttons: {
     flexDirection: 'row',
-    gap: 12,
+    gap: Spacing.md,
   },
   btn: {
-    flex: 1,
+    flex: 2,
+    flexDirection: 'row',
+    gap: 8,
     paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: Radius.full,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   btnText: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: Typography.sizes.sm,
     fontWeight: '600',
   },
   resetBtn: {
-    backgroundColor: 'transparent',
+    flex: 1,
     borderWidth: 1,
+    borderRadius: Radius.full,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   resetBtnText: {
-    fontSize: 14,
+    fontSize: Typography.sizes.sm,
     fontWeight: '600',
   },
 });

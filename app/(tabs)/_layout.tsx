@@ -1,9 +1,9 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { useTheme } from '@/hooks/use-theme';
+import { HapticTab } from "@/components/haptic-tab";
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useTheme } from "@/hooks/use-theme";
 
 export default function TabLayout() {
   const { theme } = useTheme();
@@ -24,19 +24,24 @@ export default function TabLayout() {
         headerTintColor: theme.text,
         headerShadowVisible: false,
         tabBarButton: HapticTab,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Connection Hub',
-          tabBarIcon: ({ color }) => <IconSymbol size={24} name="house.fill" color={color} />,
+          title: "Connection Hub",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={24} name="house.fill" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Semantics',
-          tabBarIcon: ({ color }) => <IconSymbol size={24} name="paperplane.fill" color={color} />,
+          title: "Semantics",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={24} name="paperplane.fill" color={color} />
+          ),
         }}
       />
     </Tabs>

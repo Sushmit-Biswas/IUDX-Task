@@ -1,19 +1,14 @@
 /**
  * ResourceModal Component
- * Resource selection modal matching the reference UI
+ * Modern Modal for selecting resources
  */
 
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Modal,
-  Pressable,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Modal, Pressable, FlatList } from 'react-native';
 import { useTheme } from '@/hooks/use-theme';
+import { Radius, Spacing, Typography, Shadows } from '@/constants/theme';
 import type { Resource } from '@/lib/iudx';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ResourceModalProps {
   visible: boolean;
@@ -31,108 +26,59 @@ export function ResourceModal({
   onCancel,
 }: ResourceModalProps) {
   const { theme } = useTheme();
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  const handleSubmit = () => {
-    if (selectedId) {
-      onSelect(selectedId);
-      setSelectedId(null);
-    }
-  };
-
-  const handleCancel = () => {
-    setSelectedId(null);
-    onCancel();
-  };
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={handleCancel}
-    >
-      <View style={[styles.overlay, { backgroundColor: theme.overlay }]}>
-        <View style={[styles.sheet, { backgroundColor: theme.card }]}>
+    <Modal visible={visible} transparent animationType="fade">
+      <View style={[styles.overlay, { backgroundColor: 'rgba(0,0,0,0.6)' }]}>
+        <View style={[styles.container, { backgroundColor: theme.card }, Shadows.lg]}>
+
           {/* Header */}
-          <View style={[styles.header, { borderBottomColor: theme.border }]}>
+          <View style={styles.header}>
             <Text style={[styles.title, { color: theme.text }]}>{title}</Text>
+            <Pressable onPress={onCancel} style={styles.closeBtn}>
+              <Ionicons name="close" size={24} color={theme.textTertiary} />
+            </Pressable>
           </View>
 
-          {/* Description */}
-          <Text style={[styles.description, { color: theme.textSecondary }]}>
-            Pick a resource from your Locker. This does not upload the file; it links a resource reference to a Consent Artefact.
+          <Text style={[styles.subtitle, { color: theme.textSecondary }]}>
+            Select a resource from your locker to fulfill this obligation.
           </Text>
 
           {/* Resource List */}
-          <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
-            {resources.map((resource) => {
-              const isSelected = resource.id === selectedId;
-              return (
-                <Pressable
-                  key={resource.id}
-                  onPress={() => setSelectedId(resource.id)}
-                  style={[
-                    styles.resourceItem,
-                    {
-                      backgroundColor: isSelected ? theme.primaryLight : theme.card,
-                      borderColor: isSelected ? theme.primary : theme.border,
-                    },
-                  ]}
-                >
-                  <View
-                    style={[
-                      styles.radio,
-                      {
-                        borderColor: isSelected ? theme.primary : theme.textTertiary,
-                        backgroundColor: isSelected ? theme.primary : 'transparent',
-                      },
-                    ]}
-                  >
-                    {isSelected && <View style={styles.radioInner} />}
-                  </View>
-                  <View style={styles.resourceInfo}>
-                    <Text style={[styles.resourceName, { color: theme.text }]}>
-                      {resource.name}
-                    </Text>
-                    <Text style={[styles.resourceMeta, { color: theme.textSecondary }]}>
-                      Type: {resource.type} • {resource.size}
-                    </Text>
-                  </View>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
-
-          {/* Actions */}
-          <View style={[styles.actions, { borderTopColor: theme.border }]}>
-            <Pressable
-              onPress={handleCancel}
-              style={[styles.btn, styles.cancelBtn, { borderColor: theme.border }]}
-            >
-              <Text style={[styles.cancelBtnText, { color: theme.textSecondary }]}>
-                Cancel
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={handleSubmit}
-              disabled={!selectedId}
-              style={[
-                styles.btn,
-                styles.submitBtn,
-                { backgroundColor: selectedId ? theme.primary : theme.backgroundTertiary },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.submitBtnText,
-                  { color: selectedId ? '#FFFFFF' : theme.textTertiary },
+          <FlatList
+            data={resources}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContent}
+            renderItem={({ item }) => (
+              <Pressable
+                onPress={() => onSelect(item.id)}
+                style={({ pressed }) => [
+                  styles.resourceItem,
+                  {
+                    borderColor: theme.border,
+                    backgroundColor: pressed ? theme.backgroundSecondary : 'transparent',
+                  }
                 ]}
               >
-                Submit
-              </Text>
-            </Pressable>
-          </View>
+                <View style={[styles.iconBox, { backgroundColor: theme.primaryLight }]}>
+                  <Ionicons name="document-text" size={20} color={theme.primary} />
+                </View>
+                <View style={styles.itemInfo}>
+                  <Text style={[styles.resourceName, { color: theme.text }]}>{item.name}</Text>
+                  <Text style={[styles.resourceType, { color: theme.textSecondary }]}>{item.type}</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color={theme.textTertiary} />
+              </Pressable>
+            )}
+          />
+
+          {/* Footer */}
+          <Pressable
+            onPress={onCancel}
+            style={[styles.cancelBtn, { backgroundColor: theme.backgroundSecondary }]}
+          >
+            <Text style={[styles.cancelText, { color: theme.text }]}>Cancel</Text>
+          </Pressable>
         </View>
       </View>
     </Modal>
@@ -142,90 +88,68 @@ export function ResourceModal({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    padding: Spacing.md,
   },
-  sheet: {
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    maxHeight: '85%',
+  container: {
+    borderRadius: Radius.xl,
+    padding: Spacing.lg,
+    maxHeight: '80%',
   },
   header: {
-    padding: 20,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
   },
   title: {
-    fontSize: 18,
+    fontSize: Typography.sizes.lg,
     fontWeight: '700',
+    flex: 1,
   },
-  description: {
-    fontSize: 13,
-    lineHeight: 18,
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 8,
+  closeBtn: {
+    padding: 4,
   },
-  list: {
-    paddingHorizontal: 20,
-    maxHeight: 400,
+  subtitle: {
+    fontSize: Typography.sizes.sm,
+    marginBottom: Spacing.lg,
+  },
+  listContent: {
+    gap: Spacing.sm,
   },
   resourceItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 2,
-    marginBottom: 10,
-    gap: 14,
+    padding: Spacing.md,
+    borderRadius: Radius.lg,
+    borderWidth: 1,
+    gap: Spacing.md,
   },
-  radio: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 2,
+  iconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: Radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  radioInner: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#FFFFFF',
-  },
-  resourceInfo: {
+  itemInfo: {
     flex: 1,
-    gap: 4,
   },
   resourceName: {
-    fontSize: 15,
+    fontSize: Typography.sizes.sm,
     fontWeight: '600',
+    marginBottom: 2,
   },
-  resourceMeta: {
-    fontSize: 13,
-  },
-  actions: {
-    flexDirection: 'row',
-    padding: 20,
-    gap: 12,
-    borderTopWidth: 1,
-  },
-  btn: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: 'center',
+  resourceType: {
+    fontSize: 12,
   },
   cancelBtn: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
+    marginTop: Spacing.lg,
+    paddingVertical: 12,
+    borderRadius: Radius.full,
+    alignItems: 'center',
   },
-  cancelBtnText: {
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  submitBtn: {},
-  submitBtnText: {
-    fontSize: 15,
+  cancelText: {
     fontWeight: '600',
   },
 });

@@ -1,8 +1,10 @@
-export { StatusBadge } from './StatusBadge';
-export { UserBadge } from './UserBadge';
-export { ConnectionHeader } from './ConnectionHeader';
-export { TabSelector } from './TabSelector';
-export { ObligationsTable } from './ObligationsTable';
-export { ResourceModal } from './ResourceModal';
-export { ConsentModal } from './ConsentModal';
-export { ActionBar } from './ActionBar';
+export * from './StatusBadge';
+export * from './ConnectionHeader';
+export * from './TabSelector';
+export * from './ObligationsList';
+// Table is deprecated/removed
+// export * from './ObligationsTable'; 
+export * from './ResourceModal';
+export * from './ConsentModal';
+export * from './ActionBar';
+export * from './ObligationCard';

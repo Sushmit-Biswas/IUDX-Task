@@ -1,11 +1,12 @@
 /**
  * StatusBadge Component
- * Clean, professional status indicator matching the reference UI
+ * Modern Pill Design
  */
 
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '@/hooks/use-theme';
+import { Radius, Spacing, Typography } from '@/constants/theme';
 import type { ConnectionStatus, ObligationStatus } from '@/lib/iudx';
 
 type Status = ConnectionStatus | ObligationStatus;
@@ -17,40 +18,35 @@ interface StatusBadgeProps {
 
 export function StatusBadge({ status, size = 'medium' }: StatusBadgeProps) {
   const { theme } = useTheme();
-  
+
   const getColors = () => {
     switch (status) {
       case 'Established':
       case 'Approved':
         return {
-          bg: theme.successLight,
-          text: theme.successText,
-          border: theme.success,
+          bg: theme.successBg,
+          text: theme.success,
         };
       case 'Pending':
         return {
-          bg: theme.warningLight,
-          text: theme.warningText,
-          border: theme.warning,
+          bg: theme.warningBg,
+          text: theme.warning,
         };
       case 'Fulfilled':
         return {
           bg: theme.primaryLight,
           text: theme.primary,
-          border: theme.primary,
         };
       case 'Rejected':
       case 'Revoked':
         return {
-          bg: theme.dangerLight,
-          text: theme.dangerText,
-          border: theme.danger,
+          bg: theme.errorBg,
+          text: theme.error,
         };
       default:
         return {
-          bg: theme.backgroundSecondary,
+          bg: theme.borderLight,
           text: theme.textSecondary,
-          border: theme.border,
         };
     }
   };
@@ -64,9 +60,8 @@ export function StatusBadge({ status, size = 'medium' }: StatusBadgeProps) {
         styles.badge,
         {
           backgroundColor: colors.bg,
-          borderColor: colors.border,
-          paddingHorizontal: isSmall ? 8 : 12,
-          paddingVertical: isSmall ? 3 : 5,
+          paddingHorizontal: isSmall ? Spacing.sm : Spacing.md,
+          paddingVertical: isSmall ? 2 : 6,
         },
       ]}
     >
@@ -75,7 +70,7 @@ export function StatusBadge({ status, size = 'medium' }: StatusBadgeProps) {
           styles.text,
           {
             color: colors.text,
-            fontSize: isSmall ? 11 : 12,
+            fontSize: isSmall ? 11 : Typography.sizes.xs,
           },
         ]}
       >
@@ -87,12 +82,14 @@ export function StatusBadge({ status, size = 'medium' }: StatusBadgeProps) {
 
 const styles = StyleSheet.create({
   badge: {
-    borderRadius: 4,
-    borderWidth: 1,
+    borderRadius: Radius.full,
     alignSelf: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
-    fontWeight: '600',
-    textTransform: 'capitalize',
+    fontWeight: '700',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
 });

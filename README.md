@@ -7,16 +7,19 @@ A mobile-first implementation of the **IUDX (Indian Urban Data Exchange)** conse
 This app demonstrates the core IUDX semantics:
 
 ### 1. Locker
+
 - A user's secure data container
 - Owns files and metadata
 - A user can have multiple lockers
 
 ### 2. Connection
+
 - A logical link between two lockers
 - Defines who can access whose data
 - **No data flows without an active connection**
 
 ### 3. Consent Artefact
+
 - A permission slip granted by the data owner
 - Always belongs to one locker (owner) and one connection (receiver)
 - Specifies: what data, for what purpose, for how long, under what conditions
@@ -41,25 +44,30 @@ npx expo start
 ## 📱 Testing the App
 
 ### Prerequisites
+
 - Node.js >= 20.x
 - Expo Go app on your mobile device
 
 ### Testing Flow
 
 1. **View Connection Status**
+
    - See the connection between LIC Insurance (Host) and Kaveri Hospital (Guest)
    - Status badge shows "Established" in green
 
 2. **Switch User View**
+
    - Tap the blue user badge to switch between Host and Guest perspectives
    - Each role sees different obligations
 
 3. **Select Resource (Provider Flow)**
+
    - As the Provider role, tap "Select Resource" on a Pending obligation
    - Choose a resource from your Locker
    - Submit to generate a Consent Artefact
 
 4. **Approve/Reject Consent (Requester Flow)**
+
    - Switch to the opposite role
    - View the Consent Artefact
    - Approve or Reject the data sharing request
