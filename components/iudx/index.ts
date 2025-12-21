@@ -7,3 +7,4 @@ export * from './ResourceModal';
 export * from './ConsentModal';
 export * from './ActionBar';
 export * from './ObligationCard';
+export * from './HeaderLogo';

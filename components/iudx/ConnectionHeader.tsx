@@ -187,15 +187,13 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         letterSpacing: 1,
         marginBottom: 2,
+        fontFamily: Typography.family.bold,
     },
     orgName: {
         fontSize: Typography.sizes.md,
         fontWeight: '700',
         color: '#FFFFFF',
-        ...Platform.select({
-            ios: { fontFamily: 'System' },
-            android: { fontFamily: 'sans-serif-medium' },
-        }),
+        fontFamily: Typography.family.bold,
     },
     switchBtn: {
         flexDirection: 'row',
@@ -211,6 +209,7 @@ const styles = StyleSheet.create({
         fontSize: Typography.sizes.sm,
         fontWeight: '700',
         color: '#FFFFFF',
+        fontFamily: Typography.family.semibold,
     },
 
     // Grid
@@ -245,15 +244,13 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5,
         marginBottom: 4,
         textTransform: 'uppercase',
+        fontFamily: Typography.family.bold,
     },
     connName: {
         fontSize: Typography.sizes.sm,
         fontWeight: '600',
         lineHeight: 20,
-        ...Platform.select({
-            ios: { fontFamily: 'System' },
-            android: { fontFamily: 'sans-serif' },
-        }),
+        fontFamily: Typography.family.semibold,
     },
     statusRow: {
         flexDirection: 'row',
@@ -275,9 +272,11 @@ const styles = StyleSheet.create({
     metricVal: {
         fontSize: 20,
         fontWeight: '700',
+        fontFamily: Typography.family.bold,
     },
     metricLabel: {
         fontSize: 11,
         fontWeight: '500',
+        fontFamily: Typography.family.medium,
     },
 });

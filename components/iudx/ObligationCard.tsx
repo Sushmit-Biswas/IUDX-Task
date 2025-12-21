@@ -151,10 +151,12 @@ const styles = StyleSheet.create({
         fontSize: Typography.sizes.md,
         fontWeight: '700',
         marginBottom: 2,
+        fontFamily: Typography.family.bold,
     },
     subtitle: {
         fontSize: Typography.sizes.xs,
         fontWeight: '500',
+        fontFamily: Typography.family.medium,
     },
     body: {
         marginBottom: Spacing.md,
@@ -165,10 +167,12 @@ const styles = StyleSheet.create({
         letterSpacing: 0.5,
         marginBottom: 4,
         textTransform: 'uppercase',
+        fontFamily: Typography.family.bold,
     },
     purpose: {
         fontSize: Typography.sizes.sm,
         lineHeight: 20,
+        fontFamily: Typography.family.regular,
     },
     resourceInfo: {
         flexDirection: 'row',
@@ -181,6 +185,7 @@ const styles = StyleSheet.create({
     resourceText: {
         fontSize: Typography.sizes.xs,
         fontWeight: '500',
+        fontFamily: Typography.family.medium,
     },
     footer: {
         marginTop: Spacing.xs,
@@ -198,6 +203,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: Typography.sizes.sm,
         fontWeight: '600',
+        fontFamily: Typography.family.semibold,
     },
     actionRow: {
         flexDirection: 'row',
@@ -216,6 +222,7 @@ const styles = StyleSheet.create({
     secondaryBtnText: {
         fontSize: Typography.sizes.xs,
         fontWeight: '600',
+        fontFamily: Typography.family.semibold,
     },
     decisionBtns: {
         flexDirection: 'row',

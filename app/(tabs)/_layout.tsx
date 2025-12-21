@@ -4,6 +4,7 @@ import React from "react";
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useTheme } from "@/hooks/use-theme";
+import { HeaderLogo } from "@/components/iudx";
 
 export default function TabLayout() {
   const { theme } = useTheme();
@@ -29,7 +30,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Connection Hub",
+          headerTitle: () => <HeaderLogo />,
+          title: "Hub",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={24} name="house.fill" color={color} />
           ),

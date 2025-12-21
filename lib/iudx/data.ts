@@ -23,11 +23,11 @@ const licResources = [
 ];
 
 export const initialConnection: Connection = {
-  id: 'conn-001',
-  name: 'Felicitation between Kaveri and LIC Insurance-Kaveri Hospital:LIC Insurance',
-  description: 'Felicitation between Kaveri and LIC Insurance',
+  id: 'conn-1',
+  name: 'LIC Policy Link',
+  description: 'Sharing policy coverage details for cashless treatment authorization.',
   status: 'Established',
-  
+
   host: {
     organization: {
       id: 'org-lic',
@@ -41,7 +41,7 @@ export const initialConnection: Connection = {
       resources: licResources,
     },
   },
-  
+
   guest: {
     organization: {
       id: 'org-kaveri',
@@ -55,7 +55,7 @@ export const initialConnection: Connection = {
       resources: kaveriResources,
     },
   },
-  
+
   // Obligations - matching the reference UI structure
   obligations: [
     {
