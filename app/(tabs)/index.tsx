@@ -171,7 +171,6 @@ export default function ConnectionHubScreen() {
         }
       >
         {/* Connection Header (Bento Grid) */}
-        {/* Connection Header (Bento Grid) */}
         <ConnectionHeader
           connection={connection}
           currentRole={currentRole}

@@ -111,6 +111,10 @@ export function ObligationsList({
                 )}
                 scrollEnabled={false}
                 contentContainerStyle={styles.listContent}
+                initialNumToRender={5}
+                maxToRenderPerBatch={5}
+                windowSize={5}
+                removeClippedSubviews={false} // Keep false for small lists to prevent blank spaces
             />
         </View>
     );
