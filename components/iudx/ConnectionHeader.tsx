@@ -106,7 +106,7 @@ export function ConnectionHeader({
                         pressed && { opacity: 0.8 }
                     ]}
                 >
-                    <Ionicons name="swap-horizontal" size={18} color="#FFFFFF" />
+                    <Ionicons name="swap-horizontal" size={16} color="#FFFFFF" />
                     <Text style={styles.switchBtnText}>Switch Role</Text>
                 </Pressable>
             </View>
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        gap: Spacing.md,
+        gap: Spacing.sm, // Reduced gap from md
         borderWidth: 1, // Add explicit border
     },
     profileInfo: {
@@ -206,9 +206,9 @@ const styles = StyleSheet.create({
     switchBtn: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8,
-        paddingHorizontal: 16, // Increased size
-        paddingVertical: 12,   // Increased size
+        gap: 6,
+        paddingHorizontal: 12, // Reduced from 16
+        paddingVertical: 8,    // Reduced from 12
         borderRadius: Radius.full,
         borderWidth: 1,
         borderColor: 'rgba(255,255,255,0.4)',
