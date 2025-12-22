@@ -1,147 +1,108 @@
-# IUDX Consent Flow - React Native Demo
+# IUDX Consent Manager
 
-A mobile-first implementation of the **IUDX (Indian Urban Data Exchange)** consent-driven data sharing system, built with React Native and Expo.
+A React Native reference implementation of the IUDX (Indian Urban Data Exchange) consent-driven data sharing protocol. This application demonstrates the secure flow of data between organizations using the core IUDX concepts of Lockers, Connections, and Consent Artefacts.
 
-## 🎯 Project Overview
+## Project Overview
 
-This app demonstrates the core IUDX semantics:
+The application simulates a healthcare data exchange scenario between two entities:
+*   **LIC Insurance** (Host Organization)
+*   **Kaveri Hospital** (Guest Organization)
 
-### 1. Locker
+It implements a bidirectional consent flow where either party can act as a Data Provider or Data Consumer depending on the specific obligation (e.g., sharing a policy document vs. requesting a medical record).
 
-- A user's secure data container
-- Owns files and metadata
-- A user can have multiple lockers
+## Key Features
 
-### 2. Connection
+### 1. Connection Hub
+The central dashboard provides a real-time view of the connection status.
+*   **Role Switching**: Users can toggle between Host and Guest roles to experience the workflow from both perspectives.
+*   **Visual Status**: A pulse animation indicates an active, secure connection.
+*   **Metrics**: Quick summary of pending and active data sharing agreements.
 
-- A logical link between two lockers
-- Defines who can access whose data
-- **No data flows without an active connection**
+### 2. Obligation Management (Bento Grid Layout)
+Data sharing duties are organized into a modern card-based list.
+*   **Provider Flow**: Select resources from a secure locker to fulfill an obligation.
+*   **Consumer Flow**: Review, approve, or reject received Consent Artefacts.
+*   **Filtering**: Tabs to segregate "Shared by me" vs. "Received from partner".
 
-### 3. Consent Artefact
+### 3. IUDX Semantics Implementation
+*   **Locker**: A secure container for resources.
+*   **Connection**: A logical link defining access rights. No data flows without an active connection.
+*   **Consent Artefact**: A digital permission slip specifying data scopes, purposes, and validity.
 
-- A permission slip granted by the data owner
-- Always belongs to one locker (owner) and one connection (receiver)
-- Specifies: what data, for what purpose, for how long, under what conditions
-- **Not the actual data** - just the permission to access it
+### 4. Modern UI/UX
+*   **Typography**: Uses the **Outfit** Google Font family for a clean, professional aesthetic.
+*   **Design System**: centralized theme management (`constants/theme.ts`) with standardized spacing, radius, and shadows.
+*   **Responsive**: Optimized for both mobile (iOS/Android) and Web platforms.
 
----
+## Technical Stack
 
-## 🚀 Quick Start
+*   **Framework**: React Native (via Expo)
+*   **Language**: TypeScript
+*   **Routing**: Expo Router
+*   **Styling**: StyleSheet API with Custom Design Tokens
+*   **State Management**: React `useReducer` for complex state transitions
+*   **Fonts**: `@expo-google-fonts/outfit`
 
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npx expo start
-
-# Press 'w' for web or scan QR code with Expo Go app
-```
-
----
-
-## 📱 Testing the App
+## Getting Started
 
 ### Prerequisites
+*   Node.js (LTS version recommended)
+*   npm or yarn
 
-- Node.js >= 20.x
-- Expo Go app on your mobile device
+### Installation
 
-### Testing Flow
+1.  Clone the repository:
+    ```bash
+    git clone <repository-url>
+    ```
 
-1. **View Connection Status**
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
 
-   - See the connection between LIC Insurance (Host) and Kaveri Hospital (Guest)
-   - Status badge shows "Established" in green
+3.  Start the development server:
+    ```bash
+    npx expo start
+    ```
 
-2. **Switch User View**
+4.  Run on device/emulator:
+    *   Press `w` for Web
+    *   Press `i` for iOS Simulator
+    *   Press `a` for Android Emulator
+    *   Scan the QR code with the **Expo Go** app on a physical device
 
-   - Tap the blue user badge to switch between Host and Guest perspectives
-   - Each role sees different obligations
-
-3. **Select Resource (Provider Flow)**
-
-   - As the Provider role, tap "Select Resource" on a Pending obligation
-   - Choose a resource from your Locker
-   - Submit to generate a Consent Artefact
-
-4. **Approve/Reject Consent (Requester Flow)**
-
-   - Switch to the opposite role
-   - View the Consent Artefact
-   - Approve or Reject the data sharing request
-
-5. **Revoke Connection**
-   - Tap "Revoke Connection" to disable all data sharing
-   - Observe: all action buttons are disabled
-   - This proves: **no data flows without an active connection**
-
----
-
-## 🏗️ Architecture
+## Project Structure
 
 ```
+app/
+├── (tabs)/
+│   ├── index.tsx          # Main Connection Hub Controller
+│   └── explore.tsx        # Semantics Reference Screen
+├── _layout.tsx            # Global Layout & Font Loading
+└── ...
+
+components/
+└── iudx/
+    ├── ConnectionHeader.tsx   # Dashboard Header with Animation
+    ├── ObligationsList.tsx    # Card-based List Component
+    ├── ObligationCard.tsx     # Individual Task Item
+    ├── ResourceModal.tsx      # Resource Selection Interface
+    ├── ConsentModal.tsx       # Consent Artefact Viewer
+    ├── HeaderLogo.tsx         # Custom App Branding
+    └── ...
+
 lib/iudx/
-├── types.ts      # TypeScript interfaces
-├── data.ts       # Mock data
-├── reducer.ts    # State machine logic
-└── index.ts      # Exports
-
-components/iudx/
-├── StatusBadge.tsx       # Status indicators
-├── ConnectionHeader.tsx  # Connection info display
-├── TabSelector.tsx       # Tab navigation
-├── ObligationsTable.tsx  # Table-style obligations list
-├── ResourceModal.tsx     # Resource selection
-├── ConsentModal.tsx      # Consent artefact viewer
-└── ActionBar.tsx         # Connection controls
-
-app/(tabs)/
-├── index.tsx     # Main Connection Hub screen
-└── explore.tsx   # IUDX Semantics documentation
+├── types.ts               # Core TypeScript definitions
+├── data.ts                # Mock Data & Initial State
+└── reducer.ts             # State Machine Logic
 ```
 
----
+## State Machine
+The application logic enforces strict transitions to ensure data integrity:
 
-## 🎨 Design System
+`Pending` -> `Provider Selects Resource` -> `Fulfilled` -> `Consumer Decides` -> `Approved` / `Rejected`
 
-- **Light/Dark Mode**: Full support with proper color contrast
-- **Professional Color Palette**: Blue primary, with success/warning/danger states
-- **Table-based Layout**: Matching reference UI design
-- **Mobile-first**: Optimized for touch interactions
-
----
-
-## 📋 State Machine
-
-```
-Pending → [Select Resource] → Fulfilled → [Approve/Reject] → Approved/Rejected
-                                              ↑
-                                    Consent Artefact generated
-```
-
----
-
-## ⚠️ Demo Limitations
-
-- Mock data only (no backend API)
-- "Select Resource" links metadata, doesn't upload files
-- Single connection demo (Host ↔ Guest)
-- Reset button restores initial state
-
----
-
-## 🔑 Key Implementation Points
-
-1. **No data flows without Connection** - Actions disabled when revoked
-2. **Bidirectional obligations** - Both parties can be Provider or Requester
-3. **Consent Artefact generation** - Auto-generated on resource selection
-4. **Role-based views** - Different actions for Provider vs Requester
-5. **State machine integrity** - Proper status transitions enforced
-
----
-
-## 📄 License
+## License
 
 MIT
