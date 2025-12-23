@@ -34,6 +34,10 @@ Data sharing duties are organized into a modern card-based list.
 *   **Design System**: centralized theme management (`constants/theme.ts`) with standardized spacing, radius, and shadows.
 *   **Responsive**: Optimized for both mobile (iOS/Android) and Web platforms.
 
+### 5. Notification System
+*   **Real-time Feedback**: Animated toast notifications for all consent actions (Approval, Rejection, Revocation, etc.).
+*   **Smart Queuing**: Manages multiple notifications with auto-dismissal and smooth transitions.
+
 ## Technical Stack
 
 *   **Framework**: React Native (via Expo)

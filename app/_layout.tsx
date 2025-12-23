@@ -19,6 +19,19 @@ import { NotificationContainer } from "@/components/notifications";
 
 SplashScreen.preventAutoHideAsync();
 
+// Suppress specific warnings
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  const msg = args[0];
+  if (typeof msg === 'string' && (
+    msg.includes('props.pointerEvents is deprecated') ||
+    msg.includes('"shadow*" style props are deprecated')
+  )) {
+    return;
+  }
+  originalWarn(...args);
+};
+
 export const unstable_settings = {
   anchor: "(tabs)",
 };
