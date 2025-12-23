@@ -25,6 +25,7 @@ import {
   type Role,
   type Obligation,
 } from "@/lib/iudx";
+import { useNotification } from "@/lib/notifications";
 import { Spacing } from "@/constants/theme";
 
 type TabKey = "shared" | "received";
@@ -43,6 +44,7 @@ type TabKey = "shared" | "received";
  */
 export default function ConnectionHubScreen() {
   const { theme } = useTheme();
+  const { showNotification } = useNotification();
 
   // State management for the connection lifecycle
   const [connection, dispatch] = useReducer(
@@ -98,7 +100,7 @@ export default function ConnectionHubScreen() {
     return provider.locker.resources;
   };
 
-  // Event handlers
+  // Event handlers with notifications
   const handleRoleSwitch = useCallback(() => {
     setCurrentRole((prev) => (prev === "HOST" ? "GUEST" : "HOST"));
   }, []);
@@ -107,31 +109,37 @@ export default function ConnectionHubScreen() {
     (obligationId: string, resourceId: string) => {
       dispatch({ type: "SELECT_RESOURCE", obligationId, resourceId });
       setResourceModalObligation(null);
+      showNotification('info', 'Resource Selected', 'Consent artefact created. Awaiting approval.');
     },
-    []
+    [showNotification]
   );
 
   const handleApprove = useCallback((obligationId: string) => {
     dispatch({ type: "APPROVE_CONSENT", obligationId });
     setConsentModalObligation(null);
-  }, []);
+    showNotification('success', 'Consent Approved', 'Data sharing has been authorized.');
+  }, [showNotification]);
 
   const handleReject = useCallback((obligationId: string) => {
     dispatch({ type: "REJECT_CONSENT", obligationId });
     setConsentModalObligation(null);
-  }, []);
+    showNotification('warning', 'Consent Rejected', 'Data sharing request was declined.');
+  }, [showNotification]);
 
   const handleRevoke = useCallback(() => {
     dispatch({ type: "REVOKE_CONNECTION" });
-  }, []);
+    showNotification('error', 'Connection Revoked', 'All data sharing has been suspended.');
+  }, [showNotification]);
 
   const handleRestore = useCallback(() => {
     dispatch({ type: "RESTORE_CONNECTION" });
-  }, []);
+    showNotification('success', 'Connection Restored', 'Data sharing has been re-established.');
+  }, [showNotification]);
 
   const handleReset = useCallback(() => {
     dispatch({ type: "RESET" });
-  }, []);
+    showNotification('info', 'Demo Reset', 'All obligations have been reset to pending.');
+  }, [showNotification]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
